@@ -1,7 +1,11 @@
-import "./App.css";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
-  return <p>hello</p>;
+  return (
+    <Router>
+      <p>hellp</p>
+    </Router>
+  );
 }
 
 export default App;
