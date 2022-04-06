@@ -1,3 +1,3 @@
 export default function Timeline() {
-  return <div>timeline</div>;
+  return <div>i am a timeline</div>;
 }
