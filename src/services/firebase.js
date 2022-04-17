@@ -1,4 +1,4 @@
-import { firebase, fieldValue } from "../lib/firebase";
+import { firebase, fieldValue, FieldValue } from "../lib/firebase";
 
 //on register check of user exist already
 export async function doesUsernameExist(username) {
@@ -27,8 +27,44 @@ export async function getUserByUserId(uid) {
   return user;
 }
 
-//get suggestions profiles
-export async function getUsersSuggetions(uid) {
-  const result = await getUserByUserId(uid);
-  return result;
+export async function getSuggestedProfiles(userId, following) {
+  let query = firebase.firestore().collection("users");
+
+  if (following.length > 0) {
+    query = query.where("userId", "not-in", [...following, userId]);
+  } else {
+    query = query.where("userId", "!=", userId);
+  }
+  const result = await query.limit(10).get();
+
+  const profiles = result.docs.map((user) => ({
+    ...user.data(),
+    docId: user.id,
+  }));
+
+  return profiles;
+}
+
+export async function followUser(followed, follower, isFollowing) {
+  return firebase
+    .firestore()
+    .collection("users")
+    .doc(follower)
+    .update({
+      following: isFollowing
+        ? FieldValue.arrayRemove(followed)
+        : FieldValue.arrayUnion(followed),
+    });
+}
+
+export async function addToFollowers(followed, follower, isFollowing) {
+  return firebase
+    .firestore()
+    .collection("users")
+    .doc(followed)
+    .update({
+      follwers: isFollowing
+        ? FieldValue.arrayRemove(follower)
+        : FieldValue.arrayUnion(follower),
+    });
 }
