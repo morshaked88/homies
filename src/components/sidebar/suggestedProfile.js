@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { followUser, addToFollowers } from "../../services/firebase";
+import {
+  updateFollowUser,
+  UpdateAddToFollowers,
+} from "../../services/firebase";
 
 export default function SuggestedProfile({
   username,
@@ -16,9 +19,9 @@ export default function SuggestedProfile({
     setFollowed(true);
 
     //add activeuser new user that he's following
-    followUser(userDocId, loggedInUserDocId, false);
+    await updateFollowUser(loggedInUserDocId, profileId, false);
     //add follower to the followed user array
-    addToFollowers(userDocId, loggedInUserDocId, false);
+    await UpdateAddToFollowers(userDocId, userId, false);
   }
 
   return !followed ? (
@@ -55,4 +58,5 @@ SuggestedProfile.prototypes = {
   username: PropTypes.string.isRequired,
   profileId: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
+  loggedInUserDocId: PropTypes.string.isRequired,
 };

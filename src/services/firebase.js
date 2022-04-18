@@ -45,7 +45,7 @@ export async function getSuggestedProfiles(userId, following) {
   return profiles;
 }
 
-export async function followUser(followed, follower, isFollowing) {
+export async function updateFollowUser(follower, followed, isFollowing) {
   return firebase
     .firestore()
     .collection("users")
@@ -57,13 +57,13 @@ export async function followUser(followed, follower, isFollowing) {
     });
 }
 
-export async function addToFollowers(followed, follower, isFollowing) {
+export async function UpdateAddToFollowers(followed, follower, isFollowing) {
   return firebase
     .firestore()
     .collection("users")
     .doc(followed)
     .update({
-      follwers: isFollowing
+      followers: isFollowing
         ? FieldValue.arrayRemove(follower)
         : FieldValue.arrayUnion(follower),
     });

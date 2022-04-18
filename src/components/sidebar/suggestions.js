@@ -33,6 +33,7 @@ export default function Suggestions({ userId, following, loggedInUserDocId }) {
             username={profile.username}
             userId={userId}
             loggedInUserDocId={loggedInUserDocId}
+            profileId={profile.userId}
           />
         ))}
       </div>
